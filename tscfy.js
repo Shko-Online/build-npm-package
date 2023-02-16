@@ -6,7 +6,7 @@ const { run } = require('./run');
 function getCommand(watch) {
     const args = [
         '--project tsconfig.build.json',
-        '--outDir ./lib/ts3.9',
+        '--outDir ./lib/ts4.2',
         '--listEmittedFiles false',
         '--declaration true',
         '--noErrorTruncation',
@@ -39,10 +39,11 @@ async function tscfy(options = {}) {
         await run({ watch, command, silent, errorCallback });
     }
 
-    await execa.command('npx copyfiles -u 1 src/**/*.d.ts lib/ts3.9')
+    await execa.command('npx copyfiles -u 1 src/**/*.d.ts lib/ts4.2')
 
     if (!watch) {
-        await execa.command('npx downlevel-dts lib/ts3.9 lib/ts3.4');
+        await execa.command('npx downlevel-dts lib/ts4.2 lib/ts3.9 --to=3.9');
+        await execa.command('npx downlevel-dts lib/ts4.2 lib/ts3.4 --to=3.4');
     }
 }
 
