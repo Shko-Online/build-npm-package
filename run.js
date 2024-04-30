@@ -12,8 +12,10 @@ function handleExit(code, stderr, errorCallback) {
 }
 
 async function run({ watch, dir, silent, command, errorCallback }) {
-    return new Promise((resolve, reject) => {
+    return new Promise(async (resolve, reject) => {
         if (command !== '') {
+            if (dir) await execa.command('npx copyfiles -u 1 src/**/*.css ' + dir);
+
             const child = execa.command(command, {
                 ... {
                     buffer: false,
